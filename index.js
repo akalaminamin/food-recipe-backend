@@ -63,12 +63,40 @@ async function run() {
       res.json(result);
     });
 
+    app.put("/allFood/addRecipe/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const updateData = req.body;
+      const options = { upset: true };
+      const updateDoc = {
+        $set: {
+          name: updateData.name,
+          email: updateData.email,
+          recipeName: updateData.recipeName,
+          cusine: updateData.cusine,
+          category: updateData.category,
+          author: updateData.author,
+          method: updateData.method,
+          ingredients: updateData.ingredients,
+          recipeImage: updateData.recipeImage,
+          status: updateData.status,
+        },
+      };
+      console.log(updateDoc)
+      const result = await allFoodCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      console.log(result);
+      res.json(result);
+    });
+
     // delete favourite api
     app.delete("/allFood/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: ObjectId(id) };
       const result = await allFoodCollection.deleteOne(filter);
-      console.log(result);
       res.json(result);
     });
 
