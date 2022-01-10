@@ -28,10 +28,47 @@ async function run() {
       res.send(result);
     });
 
+    // food single data get api
+    app.get("/allFood/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const result = await allFoodCollection.findOne(filter);
+      console.log(result);
+      res.json(result);
+    });
+
     //food POST Api
     app.post("/allFood", async (req, res) => {
       const allFood = req.body;
       const result = await allFoodCollection.insertOne(allFood);
+      res.json(result);
+    });
+
+    //food put Api
+    app.put("/allFood/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const status = req.body.status;
+      const options = { upset: true };
+      const updateStatus = {
+        $set: {
+          status: status,
+        },
+      };
+      const result = await allFoodCollection.updateOne(
+        filter,
+        updateStatus,
+        options
+      );
+      res.json(result);
+    });
+
+    // delete favourite api
+    app.delete("/allFood/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const result = await allFoodCollection.deleteOne(filter);
+      console.log(result);
       res.json(result);
     });
 
@@ -45,7 +82,7 @@ async function run() {
     // admin post Api
     app.post("/admin", async (req, res) => {
       const admin = req.body;
-      console.log(admin)
+      console.log(admin);
       const result = await adminCollection.insertOne(admin);
       res.json(result);
     });
