@@ -30,18 +30,28 @@ async function run() {
     });
 
     // favourite post api
-    app.post("/favourite", async(req, res)=>{
-      const favourites = req.body;    
-      console.log(favourites)
-      const result = await favouriteCollection.insertOne(favourites)
-      res.json(result)
-    })       
+    app.post("/favourite", async (req, res) => {
+      const favourites = req.body;
+      console.log(favourites);
+      const result = await favouriteCollection.insertOne(favourites);
+      res.json(result);
+    });
 
     // favourite get api
     app.get("/favourite", async (req, res) => {
-      const favourite = favouriteCollection.find({});           
-      const result = await favourite.toArray();     
-      res.send(result);    
+      const favourite = favouriteCollection.find({});
+      const result = await favourite.toArray();
+      res.send(result);
+    });
+
+    // delete favourite api
+    app.delete("/favourite/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      console.log(filter)
+      const result = await favouriteCollection.deleteOne(filter);
+      console.log(result)        
+      res.json(result);
     });
 
     // food single data get api
@@ -63,10 +73,10 @@ async function run() {
     //food put Api
     app.put("/allFood/:id", async (req, res) => {
       const id = req.params.id;
-      const filter = { _id: ObjectId(id) };  
+      const filter = { _id: ObjectId(id) };
       const status = req.body.status;
-      const options = { upset: true };  
-      const updateStatus = { 
+      const options = { upset: true };
+      const updateStatus = {
         $set: {
           status: status,
         },
@@ -86,8 +96,6 @@ async function run() {
       const options = { upset: true };
       const updateDoc = {
         $set: {
-          name: updateData.name,
-          email: updateData.email,
           recipeName: updateData.recipeName,
           cusine: updateData.cusine,
           category: updateData.category,
@@ -95,10 +103,10 @@ async function run() {
           method: updateData.method,
           ingredients: updateData.ingredients,
           RecipeImage: updateData.RecipeImage,
-          status: updateData.status, 
+          status: updateData.status,
         },
       };
-      console.log(updateDoc)
+      console.log(updateDoc);
       const result = await allFoodCollection.updateOne(
         filter,
         updateDoc,
