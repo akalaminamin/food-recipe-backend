@@ -48,9 +48,8 @@ async function run() {
     app.delete("/favourite/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: ObjectId(id) };
-      console.log(filter)
       const result = await favouriteCollection.deleteOne(filter);
-      console.log(result)        
+      console.log(result)
       res.json(result);
     });
 
