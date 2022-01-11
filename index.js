@@ -94,7 +94,7 @@ async function run() {
           author: updateData.author,
           method: updateData.method,
           ingredients: updateData.ingredients,
-          recipeImage: updateData.recipeImage,
+          RecipeImage: updateData.RecipeImage,
           status: updateData.status, 
         },
       };
