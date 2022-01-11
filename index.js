@@ -20,12 +20,28 @@ async function run() {
     const database = client.db("food-recipe");
     const allFoodCollection = database.collection("allFood");
     const adminCollection = database.collection("admin");
+    const favouriteCollection = database.collection("favourite");
 
     //food Get Api
     app.get("/allFood", async (req, res) => {
       const cursor = allFoodCollection.find({});
       const result = await cursor.toArray();
       res.send(result);
+    });
+
+    // favourite post api
+    app.post("/favourite", async(req, res)=>{
+      const favourites = req.body;    
+      console.log(favourites)
+      const result = await favouriteCollection.insertOne(favourites)
+      res.json(result)
+    })       
+
+    // favourite get api
+    app.get("/favourite", async (req, res) => {
+      const favourite = favouriteCollection.find({});           
+      const result = await favourite.toArray();     
+      res.send(result);    
     });
 
     // food single data get api
@@ -47,10 +63,10 @@ async function run() {
     //food put Api
     app.put("/allFood/:id", async (req, res) => {
       const id = req.params.id;
-      const filter = { _id: ObjectId(id) };
+      const filter = { _id: ObjectId(id) };  
       const status = req.body.status;
-      const options = { upset: true };
-      const updateStatus = {
+      const options = { upset: true };  
+      const updateStatus = { 
         $set: {
           status: status,
         },
@@ -79,7 +95,7 @@ async function run() {
           method: updateData.method,
           ingredients: updateData.ingredients,
           recipeImage: updateData.recipeImage,
-          status: updateData.status,
+          status: updateData.status, 
         },
       };
       console.log(updateDoc)
