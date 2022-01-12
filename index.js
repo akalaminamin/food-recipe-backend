@@ -32,7 +32,7 @@ async function run() {
     // favourite post api
     app.post("/favourite", async (req, res) => {
       const favourites = req.body;
-      console.log(favourites);
+      console.log(favourites)
       const result = await favouriteCollection.insertOne(favourites);
       res.json(result);
     });
@@ -45,18 +45,19 @@ async function run() {
     });
 
     // delete favourite api
-    app.delete("/favourite/:id", async (req, res) => {
-      const id = req.params.id;
-      const filter = { _id: ObjectId(id) };
-      const result = await favouriteCollection.deleteOne(filter);
+    app.delete("/favourite/:id", async (req, res) => {   
+      const id = await req.params.id;
+      const filter = { _id: ObjectId(id) };    
+      const result = await favouriteCollection.deleteOne(filter)
+      res.json(result);  
       console.log(result)
-      res.json(result);
-    });
+    }); 
 
     // food single data get api
-    app.get("/allFood/:id", async (req, res) => {
+    app.get("/allFood/:id", async (req, res) => {      
       const id = req.params.id;
       const filter = { _id: ObjectId(id) };
+      console.log(filter);
       const result = await allFoodCollection.findOne(filter);
       console.log(result);
       res.json(result);
@@ -105,13 +106,11 @@ async function run() {
           status: updateData.status,
         },
       };
-      console.log(updateDoc);
       const result = await allFoodCollection.updateOne(
         filter,
         updateDoc,
         options
       );
-      console.log(result);
       res.json(result);
     });
 
